@@ -1,9 +1,11 @@
 import spacy
+nlp = spacy.load("en_core_web_sm")
+doc =  open('lorem.txt')
 
-doc =  textacy.io.spacy.read_spacy_docs('lorem.txt', lang='en')
+data = doc.read()
 
-print(doc)
+i = nlp(data)
 
-for token in doc:
+for token in i:
     print(token.text, token.dep_, token.head.text, token.head.pos_,
             [child for child in token.children])
