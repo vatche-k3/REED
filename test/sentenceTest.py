@@ -4,6 +4,8 @@ from spacy.matcher import Matcher
 from rake_nltk import Rake
 from hashMap import MyHashMap
 
+display = ""
+
 r = Rake()
 
 nlp = spacy.load("en_core_web_sm")
@@ -12,36 +14,30 @@ matcher = Matcher(nlp.vocab)
 doc =  open('lorem.txt')
 
 data = doc.read()
-t = nlp(data)
+
 hm = MyHashMap()
+sentencizer = nlp.create_pipe("sentencizer")
+nlp.add_pipe(sentencizer)
+t = nlp(data)
+i = 0
+for sent in t.sents:
+    for token in sent:
+        if(token.lemma_ == "collect"):
+            hm.put(i, sent.text)
+            i+=1
+            break
+
+for j in range(i):
+    display += hm.get(j)
+    display += " "
+displacy.serve(nlp(display), style="ent")
+    
 #r.extract_keywords_from_text(data)
 #print(r.get_ranked_phrases())
 #displacy.serve(i, style="ent")
 
-collect = []
-verb = []
-check = 0
-string = ""
-i = 0
 
 
-for token in t:
-    
-    lemma = token.lemma_
-    if(lemma == "collect" or check == 1):
-        check = 1
-        if(token.pos_ )
-        string += " "
-        string += token.text
-
-    if(token.text == "." and check == 1):
-        check = 0
-        hm.put(i, string)
-        i += 1
-        string = ""
-
-for j in range(i):
-    print(hm.get(j))
         
     
 
